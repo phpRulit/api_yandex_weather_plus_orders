@@ -15,5 +15,5 @@ SPA (Laravel + Vue JS + Vuex + Docker)
 front: http://localhost:8093 back: http://localhost:8094
 
 
-# api_yandex_weather_plus_orders
+# tz_api_yandex_weather_plus_orders
 Выводим погоду на сайте + обработка поступивших заказов
