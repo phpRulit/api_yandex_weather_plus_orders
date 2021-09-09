@@ -4,5 +4,14 @@
 !!!ПОКА В РАЗРАБОТКЕ
 
 
+Установить docker, docker-compose.
+
+Развернуть приложение - make init
+
+В api/.env добавить свой api ключ разработчика Yandex, для вывода погоды на сайте (тестовый режим, читать документацию...).
+
+front: http://localhost:8093 back: http://localhost:8094
+
+
 # api_yandex_weather_plus_orders
 Выводим погоду на сайте + обработка поступивших заказов
