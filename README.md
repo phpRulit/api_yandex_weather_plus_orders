@@ -1,5 +1,6 @@
 [Техническое задание.odt](https://github.com/phpRulit/api_yandex_weather_plus_orders/files/7137043/default.odt)
 
+SPA (Laravel + Vue JS + Vuex + Docker)
 
 !!!ПОКА В РАЗРАБОТКЕ (размещу полностью ориентировочно 10.09.2021)
 
