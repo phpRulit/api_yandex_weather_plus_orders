@@ -399,7 +399,6 @@ export default {
           this.order.products.forEach(item => {
             this.productsOrderIds.push(item.id);
           })
-          //console.log(this.order)
         })
     },
     getPartnersModal() {
@@ -411,7 +410,6 @@ export default {
       this.getPartnersList()
         .then(() => {
           this.partners = this.$store.getters["data/partners"];
-          //console.log(this.partners)
         })
     },
     ...mapActions("orders", ["setNewPartner"]),
@@ -520,7 +518,6 @@ export default {
           });
       }
     },
-    //не доделал, доделать!!!
     getModalEditQuantityItem(indexOrderProduct) {
       let order_product = indexOrderProduct !== null ? this.order.order_products[indexOrderProduct] : null;
       this.indexOrderProduct = indexOrderProduct !== null ? indexOrderProduct : null;
@@ -538,16 +535,16 @@ export default {
       details['product_id'] = this.editProduct.id;
       details['quantity'] = this.quantity;
       this.editQuantityItemInOrder(details)
-          .then(() => {
-            if (this.$store.getters["messageError"]) {
-              this.$toastr.e(this.$store.getters["messageError"]);
-            } else if (this.$store.getters["messageSuccess"]) {
-              this.order.order_products[this.indexOrderProduct].quantity = this.quantity;
-              this.order.order_products[this.indexOrderProduct].price = this.quantity * this.editProduct.price;
-              this.getModalEditQuantityItem(null);
-              this.$toastr.s(this.$store.getters["messageSuccess"]);
-            }
-          })
+        .then(() => {
+          if (this.$store.getters["messageError"]) {
+            this.$toastr.e(this.$store.getters["messageError"]);
+          } else if (this.$store.getters["messageSuccess"]) {
+            this.order.order_products[this.indexOrderProduct].quantity = this.quantity;
+            this.order.order_products[this.indexOrderProduct].price = this.quantity * this.editProduct.price;
+            this.getModalEditQuantityItem(null);
+            this.$toastr.s(this.$store.getters["messageSuccess"]);
+          }
+        })
     }
   },
   created() {
