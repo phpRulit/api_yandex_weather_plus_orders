@@ -448,20 +448,20 @@ export default {
       details['client_email'] = this.showEmailClientInput ? this.details.client_email : null;
       details['delivery_dt'] = this.showModalCalendar ? this.details.delivery_dt : null;
       this.setChangesOrder(details)
-          .then(() => {
-            if (this.$store.getters["messageError"]) {
-              this.$toastr.e(this.$store.getters["messageError"]);
-            } else if (this.$store.getters["messageSuccess"]) {
-              this.order.status = this.details.status;
-              this.order.client_email = this.details.client_email;
-              this.order.delivery_dt = this.details.delivery_dt;
-              this.showStatusSelect = false;
-              this.showEmailClientInput = false;
-              this.showModalCalendar = false;
-              this.setDataToDetails();
-              this.$toastr.s(this.$store.getters["messageSuccess"]);
-            }
-          })
+        .then(() => {
+          if (this.$store.getters["messageError"]) {
+            this.$toastr.e(this.$store.getters["messageError"]);
+          } else if (this.$store.getters["messageSuccess"]) {
+            this.order.status = this.details.status;
+            this.order.client_email = this.details.client_email;
+            this.order.delivery_dt = this.details.delivery_dt;
+            this.showStatusSelect = false;
+            this.showEmailClientInput = false;
+            this.showModalCalendar = false;
+            this.setDataToDetails();
+            this.$toastr.s(this.$store.getters["messageSuccess"]);
+          }
+        })
     },
     ...mapActions("data", ["getProductsList"]),
     getProducts() {
