@@ -5,10 +5,12 @@ export default {
     state: {
         orders: null,
         order: null,
+        order_product: null,
     },
     getters: {
         orders: state => state.orders,
         order: state => state.order,
+        order_product: state => state.order_product,
     },
     mutations: {
         setOrders (state, data) {
@@ -16,6 +18,9 @@ export default {
         },
         setOrder (state, data) {
             state.order = data
+        },
+        setOrderProduct (state, data) {
+            state.order_product = data
         },
     },
     actions: {
@@ -33,16 +38,83 @@ export default {
                     commit('setOrder', data);
                 })
         },
-        getEditOrder({commit}, [order_id, details]) {
-            commit('setError', null, {root: true});
-            commit('setSuccess', null, {root: true});
+        setNewPartner({commit}, details) {
+            commit('setMessageError', null, {root: true});
+            commit('setMessageSuccess', null, {root: true});
+            const formData = new FormData();
+            formData.append('partner_id', details.partner_id);
             return axios
-                .post('/' + order_id, details)
+                .post('/orders/set-new-partner/' + details.order_id, formData)
                 .then(({data}) => {
-                    if (data.errorMsg) {
-                        commit('setError', data.errorMsg, {root: true});
-                    } else if (data.successMsg) {
-                        commit('setSuccess', data.successMsg, {root: true});
+                    if (data.messageError) {
+                        commit('setMessageError', data.messageError, {root: true});
+                    } else if (data.message) {
+                        commit('setMessageSuccess', data.message, {root: true});
+                        commit("setErrors", [], {root: true});
+                    }
+                })
+        },
+        setChangesOrder({commit}, details) {
+            commit('setMessageError', null, {root: true});
+            commit('setMessageSuccess', null, {root: true});
+            const formData = new FormData();
+            details.status ? formData.append('status', details.status) : null;
+            details.client_email ? formData.append('client_email', details.client_email) : null;
+            details.delivery_dt ? formData.append('delivery_dt', details.delivery_dt) : null;
+            return axios
+                .post('/orders/edit-order/' + details.order_id, formData)
+                .then(({data}) => {
+                    if (data.messageError) {
+                        commit('setMessageError', data.messageError, {root: true});
+                    } else if (data.message) {
+                        commit('setMessageSuccess', data.message, {root: true});
+                        commit("setErrors", [], {root: true});
+                    }
+                })
+        },
+        setItemInOrder({commit}, details) {
+            commit('setMessageError', null, {root: true});
+            commit('setMessageSuccess', null, {root: true});
+            const formData = new FormData();
+            formData.append('quantity', details.quantity);
+            return axios
+                .post('/orders/add-item-in-order/' + details.order_id + '/' + details.product_id, formData)
+                .then(({data}) => {
+                    if (data.messageError) {
+                        commit('setMessageError', data.messageError, {root: true});
+                    } else if (data.message) {
+                        commit('setOrderProduct', data.order_product);
+                        commit('setMessageSuccess', data.message, {root: true});
+                        commit("setErrors", [], {root: true});
+                    }
+                })
+        },
+        editQuantityItemInOrder({commit}, details) {
+            commit('setMessageError', null, {root: true});
+            commit('setMessageSuccess', null, {root: true});
+            const formData = new FormData();
+            formData.append('quantity', details.quantity);
+            return axios
+                .post('/orders/edit-quantity-item-order/' + details.order_id + '/' + details.order_product_id + '/' + details.product_id, formData)
+                .then(({data}) => {
+                    if (data.messageError) {
+                        commit('setMessageError', data.messageError, {root: true});
+                    } else if (data.message) {
+                        commit('setMessageSuccess', data.message, {root: true});
+                        commit("setErrors", [], {root: true});
+                    }
+                })
+        },
+        destroyItemOrder({commit}, details) {
+            commit('setMessageError', null, {root: true});
+            commit('setMessageSuccess', null, {root: true});
+            return axios
+                .delete('/orders/destroy-item-order/' + details.order_id + '/' + details.order_product_id)
+                .then(({data}) => {
+                    if (data.messageError) {
+                        commit('setMessageError', data.messageError, {root: true});
+                    } else if (data.message) {
+                        commit('setMessageSuccess', data.message, {root: true});
                     }
                 })
         }

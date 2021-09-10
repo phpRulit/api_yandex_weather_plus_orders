@@ -5,19 +5,20 @@ import axios from "axios";
 Vue.use(Vuex)
 
 import orders from "./modules/orders";
+import data from "./modules/data";
 
 export default new Vuex.Store({
   state: {
     weather: null,
     errors: [],
-    errorMsg: null,
-    successMsg: null,
+    messageSuccess: null,
+    messageError: null,
   },
   getters: {
     weather: state => state.weather,
     errors: state => state.errors,
-    errorMsg: state => state.errorMsg,
-    successMsg: state => state.successMsg,
+    messageSuccess: state => state.messageSuccess,
+    messageError: state => state.messageError,
   },
   mutations: {
     setWeather(state, data) {
@@ -26,11 +27,11 @@ export default new Vuex.Store({
     setErrors(state, errors) {
       state.errors = errors;
     },
-    setError(state, msg) {
-      state.errorMsg = msg;
+    setMessageSuccess(state, msg) {
+      state.messageSuccess = msg;
     },
-    setSuccess(state, msg) {
-      state.successMsg = msg;
+    setMessageError(state, msg) {
+      state.messageError = msg;
     },
   },
   actions: {
@@ -43,5 +44,6 @@ export default new Vuex.Store({
   },
   modules: {
     orders: orders,
+    data: data,
   }
 })

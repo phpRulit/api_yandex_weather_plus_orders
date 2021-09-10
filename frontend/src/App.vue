@@ -31,4 +31,5 @@ export default {
 
 <style lang="scss">
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import './bootstrap/bootstrap.scss';
 </style>

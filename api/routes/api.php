@@ -28,11 +28,23 @@ Route::group([
             Route::get('set-weather', 'WeatherController@currentWeather');
         });
         Route::group([
+            'prefix' => 'data',
+            'namespace' => 'Data'
+        ], function () {
+            Route::get('get-partners-list', 'DataController@getPartnersList');
+            Route::get('get-products-list', 'DataController@getProductsList');
+        });
+        Route::group([
             'prefix' => 'orders',
             'namespace' => 'Orders'
         ], function () {
             Route::get('get-list', 'HomeController@index');
             Route::get('get-order/{order_id}', 'EditController@order');
+            Route::post('set-new-partner/{order}', 'EditController@editPartner');
+            Route::post('edit-order/{order}', 'EditController@editOrder');
+            Route::post('add-item-in-order/{order}/{product}', 'EditController@addItemInOrder');
+            Route::post('edit-quantity-item-order/{order}/{order_product}/{product}', 'EditController@editQuantityItem');
+            Route::delete('destroy-item-order/{order}/{order_product_id}', 'EditController@destroyItemOrder');
         });
     });
 

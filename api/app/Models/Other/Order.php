@@ -52,5 +52,10 @@ class Order extends Model
         return $this->belongsTo(Partner::class);
     }
 
+    public function isCompleted(): bool
+    {
+        return $this->status === self::STATUS_COMPLETED;
+    }
+
 
 }
