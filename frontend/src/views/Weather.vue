@@ -7,7 +7,7 @@
     </div>
     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 row mx-auto text-center">
       <div class="col-md-3 text-center mb-3">
-        <img :src="this.weather.icon_url" alt="Погода в доме">
+        <img width="50" :src="this.weather.icon_url" alt="Погода в доме">
       </div>
       <div class="col-md-3 text-center mb-3">
         <b>Температура:</b><br>{{(this.weather.temp > 0 ? '+ ' : (this.weather.temp !== 0 ? '- ' : '')) + this.weather.temp}}
