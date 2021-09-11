@@ -1,5 +1,8 @@
 [Техническое задание.odt](https://github.com/phpRulit/api_yandex_weather_plus_orders/files/7137043/default.odt)
 
+# tz_api_yandex_weather_plus_orders
+Выводим погоду на сайте + обработка поступивших заказов
+
 SPA (Laravel + Vue JS + Vuex + Docker)
 
 Миграции заданы изначально...
@@ -16,7 +19,3 @@ SPA (Laravel + Vue JS + Vuex + Docker)
 - свои настройки для отправки писем.
 
 front: http://localhost:8093 back: http://localhost:8094
-
-
-# tz_api_yandex_weather_plus_orders
-Выводим погоду на сайте + обработка поступивших заказов
