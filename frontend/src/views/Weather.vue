@@ -5,12 +5,19 @@
         <option :value="town.value" v-for="town in towns" :key="town.value">{{town.name}}</option>
       </select>
     </div>
-    <div class="col-md-6 row mx-auto text-center">
-      <img :src="this.weather.icon_url" alt="Погода в доме">
-      <span class="pl-5"><b>Температура:</b><br>{{(this.weather.temp > 0 ? '+ ' : (this.weather.temp !== 0 ? '- ' : '')) + this.weather.temp}}</span>
-      <span class="pl-5"><b>Ощущается как:</b><br>{{(this.weather.feels_like > 0 ? '+ ' : this.weather.feels_like !== 0 ? '- ' : '') + this.weather.feels_like}}</span>
-      <span class="pl-5"><b>Сила ветра:</b><br>{{this.weather.wind_speed}} м/с</span>
-      <span class="pl-5"><b>Давление:</b><br>{{this.weather.pressure_mm}} рт.ст.</span>
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 row mx-auto text-center">
+      <div class="col-md-3 text-center mb-3">
+        <img :src="this.weather.icon_url" alt="Погода в доме">
+      </div>
+      <div class="col-md-3 text-center mb-3">
+        <b>Температура:</b><br>{{(this.weather.temp > 0 ? '+ ' : (this.weather.temp !== 0 ? '- ' : '')) + this.weather.temp}}
+      </div>
+      <div class="col-md-3 text-center mb-3">
+        <b>Ощущается как:</b><br>{{(this.weather.feels_like > 0 ? '+ ' : this.weather.feels_like !== 0 ? '- ' : '') + this.weather.feels_like}}
+      </div>
+      <div class="col-md-3 text-center">
+        <b>Сила ветра:</b><br>{{this.weather.wind_speed}} м/с
+      </div>
     </div>
   </div>
 </template>

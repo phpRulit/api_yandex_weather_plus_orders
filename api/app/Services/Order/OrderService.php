@@ -51,10 +51,8 @@ class OrderService
             'products' => $order->products
         ];
         foreach ($arrayData as $data) {
-            $emailRecipient = $data['mail'];
-            $nameRecipient = $data['name'];
-            $message['nameRecipient'] = $nameRecipient;
-            $this->sentMailAllNeeded($emailRecipient, $nameRecipient, $message);
+            $message['nameRecipient'] = $data['name'];
+            $this->sentMailAllNeeded($data['mail'], $data['name'], $message);
         }
     }
 
