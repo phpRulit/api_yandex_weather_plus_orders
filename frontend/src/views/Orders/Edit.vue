@@ -177,7 +177,7 @@
                   <div class="mb-3">
                     <b-row>
                       <div class="invalid-feedback" v-if="errors.delivery_dt"> {{ errors.delivery_dt[0] }}</div>
-                      <b-col md="auto">
+                      <b-col>
                         <b-calendar
                             :class="{ 'border border-danger': errors.delivery_dt }"
                             block
