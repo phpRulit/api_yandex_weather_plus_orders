@@ -72,6 +72,9 @@ export default {
                     }
                 })
         },
+        async sentMailOrderCompleted({commit}, order_id) {
+            return axios.post('/orders/mails-order-completed/' + order_id)
+        },
         setItemInOrder({commit}, details) {
             commit('setMessageError', null, {root: true});
             commit('setMessageSuccess', null, {root: true});

@@ -11,6 +11,7 @@ use App\Models\Other\OrderProduct;
 use App\Models\Other\Product;
 use App\Services\Order\OrderService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class EditController extends Controller
 {
@@ -37,6 +38,7 @@ class EditController extends Controller
         try {
             $this->service->editPartner($order, $request);
         } catch (\DomainException $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'messageError' => 'Ошибка!!! Попробуйте ещё раз...'
             ]);
@@ -56,6 +58,7 @@ class EditController extends Controller
         try {
             $this->service->editOrder($order, $request);
         } catch (\DomainException $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'messageError' => 'Ошибка!!! Попробуйте ещё раз...'
             ]);
@@ -63,7 +66,16 @@ class EditController extends Controller
         return response()->json([
             'message' => 'Изменения сохранены...'
         ]);
+    }
 
+    public function sentMailsAboutOrderCompleted (Order $order): void
+    {
+        if ($order->isCompleted())
+            try {
+                $this->service->sentMailsAboutOrderCompleted($order);
+            } catch (\DomainException $e) {
+                Log::error($e->getMessage());
+            }
     }
 
     public function addItemInOrder(Order $order, Product $product, QuantityRequest $request): JsonResponse
@@ -81,6 +93,7 @@ class EditController extends Controller
         try {
             $order_product = $this->service->addItemInOrder($order, $product, $request);
         } catch (\DomainException $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'messageError' => 'Ошибка!!! Попробуйте ещё раз...'
             ]);
@@ -107,6 +120,7 @@ class EditController extends Controller
         try {
             $this->service->destroyItemOrder($order_product);
         } catch (\DomainException $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'messageError' => 'Ошибка!!! Попробуйте ещё раз...'
             ]);
@@ -126,6 +140,7 @@ class EditController extends Controller
         try {
             $this->service->editQuantityItem($order_product, $product, $request);
         } catch (\DomainException $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'messageError' => 'Ошибка!!! Попробуйте ещё раз...'
             ]);

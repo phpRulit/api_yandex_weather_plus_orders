@@ -441,6 +441,7 @@ export default {
       this.context = ctx
     },
     ...mapActions("orders", ["setChangesOrder"]),
+    ...mapActions("orders", ["sentMailOrderCompleted"]),
     editOrder() {
       let details = {};
       details['order_id'] = this.order_id;
@@ -448,20 +449,23 @@ export default {
       details['client_email'] = this.showEmailClientInput ? this.details.client_email : null;
       details['delivery_dt'] = this.showModalCalendar ? this.details.delivery_dt : null;
       this.setChangesOrder(details)
-        .then(() => {
-          if (this.$store.getters["messageError"]) {
-            this.$toastr.e(this.$store.getters["messageError"]);
-          } else if (this.$store.getters["messageSuccess"]) {
-            this.order.status = this.details.status;
-            this.order.client_email = this.details.client_email;
-            this.order.delivery_dt = this.details.delivery_dt;
-            this.showStatusSelect = false;
-            this.showEmailClientInput = false;
-            this.showModalCalendar = false;
-            this.setDataToDetails();
-            this.$toastr.s(this.$store.getters["messageSuccess"]);
-          }
-        })
+          .then(() => {
+            if (this.$store.getters["messageError"]) {
+              this.$toastr.e(this.$store.getters["messageError"]);
+            } else if (this.$store.getters["messageSuccess"]) {
+              this.order.status = this.details.status;
+              this.order.client_email = this.details.client_email;
+              this.order.delivery_dt = this.details.delivery_dt;
+              this.showStatusSelect = false;
+              this.showEmailClientInput = false;
+              this.showModalCalendar = false;
+              this.setDataToDetails();
+              this.$toastr.s(this.$store.getters["messageSuccess"]);
+              if (this.order.status === 20) {
+                this.sentMailOrderCompleted(this.order_id);
+              }
+            }
+          })
     },
     ...mapActions("data", ["getProductsList"]),
     getProducts() {
@@ -535,16 +539,16 @@ export default {
       details['product_id'] = this.editProduct.id;
       details['quantity'] = this.quantity;
       this.editQuantityItemInOrder(details)
-        .then(() => {
-          if (this.$store.getters["messageError"]) {
-            this.$toastr.e(this.$store.getters["messageError"]);
-          } else if (this.$store.getters["messageSuccess"]) {
-            this.order.order_products[this.indexOrderProduct].quantity = this.quantity;
-            this.order.order_products[this.indexOrderProduct].price = this.quantity * this.editProduct.price;
-            this.getModalEditQuantityItem(null);
-            this.$toastr.s(this.$store.getters["messageSuccess"]);
-          }
-        })
+          .then(() => {
+            if (this.$store.getters["messageError"]) {
+              this.$toastr.e(this.$store.getters["messageError"]);
+            } else if (this.$store.getters["messageSuccess"]) {
+              this.order.order_products[this.indexOrderProduct].quantity = this.quantity;
+              this.order.order_products[this.indexOrderProduct].price = this.quantity * this.editProduct.price;
+              this.getModalEditQuantityItem(null);
+              this.$toastr.s(this.$store.getters["messageSuccess"]);
+            }
+          })
     }
   },
   created() {

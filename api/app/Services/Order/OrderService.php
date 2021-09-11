@@ -8,6 +8,9 @@ use App\Http\Requests\EditOrderRequest;
 use App\Models\Other\Order;
 use App\Models\Other\OrderProduct;
 use App\Models\Other\Product;
+use App\Services\AppMessenger\AppMessenger;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -22,9 +25,6 @@ class OrderService
     {
         if (isset($request['status']) && $order->status !== $request['status']) {
             $order->update(['status' => $request['status']]);
-            if ($request['status'] === Order::STATUS_COMPLETED) {
-                $this->sentMailAllNeeded();
-            }
         } elseif (isset($request['client_email']) && $order->client_email !== $request['client_email']) {
             $order->update(['client_email' => $request['client_email']]);
         } elseif (isset($request['delivery_dt']) && $order->delivery_dt !== $request['delivery_dt']) {
@@ -32,8 +32,43 @@ class OrderService
         }
     }
 
-    private function sentMailAllNeeded() {
-        //пока не сделано...
+    public function sentMailsAboutOrderCompleted(Order $order): void
+    {
+        $arrayData = [
+            ['mail' => $order->client_email, 'name' => ''],
+            ['mail' => $order->partner->email, 'name' => $order->partner->name],
+        ];
+        $vendors = $order->products()
+            ->join('vendors', 'products.vendor_id', '=', 'vendors.id')
+            ->select('vendors.email', 'vendors.name')->distinct()->get()->toArray();
+        foreach ($vendors as $vendor) {
+            $arrayData[] = ['mail' => $vendor['email'], 'name' => $vendor['name']];
+        }
+        $message = [
+            'nameRecipient' => null,
+            'text' => 'Настоящим сообщаем, что заказ №' . $order->id . ' завершён.',
+            'order_products' => $order->orderProducts,
+            'products' => $order->products
+        ];
+        foreach ($arrayData as $data) {
+            $emailRecipient = $data['mail'];
+            $nameRecipient = $data['name'];
+            $message['nameRecipient'] = $nameRecipient;
+            $this->sentMailAllNeeded($emailRecipient, $nameRecipient, $message);
+        }
+    }
+
+    private function sentMailAllNeeded(string $emailRecipient, string $nameRecipient, array $message)
+    {
+        $messenger = new AppMessenger();
+        $messenger->toEmail('mail.order')
+            ->setSender(env('MAIL_USERNAME'))
+            ->setFrom(env("APP_NAME"))
+            ->setRecipient($emailRecipient)
+            ->setToWhom($nameRecipient)
+            ->setSubject('Закрытие заказа.')
+            ->setMessageMail($message)
+            ->send();
     }
 
     public function addItemInOrder(Order $order, Product $product, QuantityRequest $request): OrderProduct
@@ -46,7 +81,7 @@ class OrderService
         ]);
     }
 
-    public function editQuantityItem(OrderProduct $order_product, Product $product, QuantityRequest $request)
+    public function editQuantityItem(OrderProduct $order_product, Product $product, QuantityRequest $request): void
     {
         $order_product->update([
             'quantity' => $request['quantity'],
