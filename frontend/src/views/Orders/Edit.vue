@@ -137,8 +137,8 @@
             <td>
               <div class="row mb-2" v-for="(op, indexOp) in order.order_products">
                 <div class="col-md-10">{{indexOp + 1}}.
-                  <span v-for="(p, indexP) in order.products">
-                    <span v-if="indexOp === indexP">{{p.name}}; Количество: {{op.quantity}}; Цена: {{p.price}}; Общая стоимость: {{op.quantity * p.price}}</span>
+                  <span v-if="indexOp === indexP" v-for="(p, indexP) in order.products">
+                    {{p.name}}; Количество: {{op.quantity}}; Цена: {{p.price}}; Общая стоимость: {{op.quantity * p.price}}
                   </span>
                 </div>
                 <div class="col-md-2 text-right" v-if="order.status !== 20">

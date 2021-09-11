@@ -55,8 +55,8 @@
               <td class="col-1 text-center">{{order.order_products.map(i => sum += i.price, sum=0).reverse()[0]}}</td>
               <td class="col-6">
                 <span v-for="(op, indexOp) in order.order_products">{{indexOp + 1}}.
-                  <span v-for="(p, indexP) in order.products">
-                     <span v-if="indexOp === indexP">{{p.name}}; Количество: {{op.quantity}}; Цена: {{p.price}}; Общая стоимость: {{op.price}}</span>
+                  <span v-if="indexOp === indexP" v-for="(p, indexP) in order.products">
+                     {{p.name}}; Количество: {{op.quantity}}; Цена: {{p.price}}; Общая стоимость: {{op.price}}
                   </span><br>
                 </span>
               </td>
