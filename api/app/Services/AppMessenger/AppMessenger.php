@@ -7,7 +7,7 @@ use App\Services\AppMessenger\Messengers\SmsMessenger;
 
 class AppMessenger implements MessengerInterface
 {
-    //Это наш класс - делегат, с которым будет работать сервис
+    //Это класс делегат, с которым будет работать сервис (patterns design)
 
     /**
      * @var MessengerInterface
