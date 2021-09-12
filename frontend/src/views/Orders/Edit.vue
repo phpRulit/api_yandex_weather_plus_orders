@@ -532,7 +532,6 @@ export default {
             });
       }
     },
-    //не доделал, доделать!!!
     getModalEditQuantityItem(indexOrderProduct) {
       let order_product = indexOrderProduct !== null ? this.order.order_products[indexOrderProduct] : null;
       this.indexOrderProduct = indexOrderProduct !== null ? indexOrderProduct : null;
