@@ -23,7 +23,7 @@ class EditController extends Controller
         $this->service = $service;
     }
 
-    public function order($order_id): JsonResponse
+    public function order(int $order_id): JsonResponse
     {
         return response()->json(Order::where('id', $order_id)->with(['partner', 'orderProducts', 'products'])->first());
     }
