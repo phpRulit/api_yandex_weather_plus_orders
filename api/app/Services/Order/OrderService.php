@@ -56,7 +56,7 @@ class OrderService
         }
     }
 
-    private function sentMailAllNeeded(string $emailRecipient, string $nameRecipient, array $message)
+    private function sentMailAllNeeded(string $emailRecipient, string $nameRecipient, array $message): void
     {
         $messenger = new AppMessenger();
         $messenger->toEmail('mail.order')
