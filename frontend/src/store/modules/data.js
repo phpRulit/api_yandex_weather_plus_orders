@@ -19,8 +19,8 @@ export default {
         },
     },
     actions: {
-        async getPartnersList({commit}) {
-            return await axios
+        getPartnersList({commit}) {
+            return axios
                 .get('/data/get-partners-list')
                 .then(({data}) => {
                     commit('setPartners', data);

@@ -10,18 +10,18 @@
       <h4>Партнёр:</h4>
       <table class="table table-bordered small">
         <tbody>
-          <tr>
-            <th class="col-2">Email:</th>
-            <td class="col-9">{{ this.order.partner.email }}</td>
-            <td class="text-center col-1">
-              <span class="spanHover" v-if="order.status !== 20" @click="getPartnersModal"><b-icon class="icon" icon="binoculars" variant="primary"></b-icon></span>
-            </td>
-          </tr>
-          <tr>
-            <th>Наименование:</th>
-            <td>{{ this.order.partner.name }}</td>
-            <td></td>
-          </tr>
+        <tr>
+          <th class="col-2">Email:</th>
+          <td class="col-9">{{ this.order.partner.email }}</td>
+          <td class="text-center col-1">
+            <span class="spanHover" v-if="order.status !== 20" @click="getPartnersModal"><b-icon class="icon" icon="binoculars" variant="primary"></b-icon></span>
+          </td>
+        </tr>
+        <tr>
+          <th>Наименование:</th>
+          <td>{{ this.order.partner.name }}</td>
+          <td></td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -43,19 +43,24 @@
                   сделайте выбор и сохраните изменения...
                 </p>
                 <div class="mb-3">
-                  <input v-model="partnerChoice" id="title" type="text" list="inputList" class="form-control" placeholder="Наименование организации...">
-                  <dataList id="inputList">
-                    <option :value="prompt.name" v-for="(prompt, index) in Partners" :key="index"></option>
-                  </dataList>
+                  <div v-if="!loadingProcess">
+                    <input v-model="partnerChoice" id="title" type="text" list="inputList" class="form-control" placeholder="Наименование организации...">
+                    <dataList id="inputList">
+                      <option :value="prompt.name" v-for="(prompt, index) in Partners" :key="index"></option>
+                    </dataList>
+                  </div>
+                  <div v-else class="text-center">
+                    Подгружаю партнёров...
+                  </div>
                 </div>
                 <div v-if="partner && partner.length === 1">
                   <span class="mb-2">Ваш выбор...</span>
                   <table class="table table-bordered small">
                     <tbody>
-                      <tr class="p-0">
-                        <td>{{partner[0].name}}</td>
-                        <td>{{partner[0].email}}</td>
-                      </tr>
+                    <tr class="p-0">
+                      <td>{{partner[0].name}}</td>
+                      <td>{{partner[0].email}}</td>
+                    </tr>
                     </tbody>
                   </table>
                   <button class="btn btn-primary w-100 mt-3" @click="changePartner">Сохранить изменения</button>
@@ -70,92 +75,92 @@
       <h4>Заказ:</h4>
       <table class="table table-bordered small">
         <tbody>
-          <tr>
-            <th class="col-2">Статус:</th>
-            <td  class="col-9">
-              <div v-if="!showStatusSelect">
-                <span v-if="order.status === 0">НОВЫЙ</span>
-                <span v-else-if="order.status === 10">ПОДТВЕРЖДЁН</span>
-                <span v-else-if="order.status === 20">ЗАВШЁН</span>
-              </div>
-              <div class="col-12 row p-0" v-else>
-                <div class="col-lg-5 col-md-9 col-sm-12 col-xs-12 pr-0">
-                  <div class="input-group pr-0">
-                    <select class="form-control" v-model="details.status" :class="{ 'is-invalid': errors.status }">
-                      <option :value="status.value" v-for="status in statuses">{{status.text}}</option>
-                    </select>
-                    <div class="invalid-feedback" v-if="errors.status">{{ errors.status[0] }}</div>
-                    <div class="input-group-append pr-0">
-                      <button @click="editOrder" :disabled="details.status === order.status" class="btn btn-primary" type="button"><b-icon class="icon" icon="arrow-counterclockwise"></b-icon></button>
-                      <button class="btn btn-secondary" @click="getStatusInput">X</button>
-                    </div>
+        <tr>
+          <th class="col-2">Статус:</th>
+          <td  class="col-9">
+            <div v-if="!showStatusSelect">
+              <span v-if="order.status === 0">НОВЫЙ</span>
+              <span v-else-if="order.status === 10">ПОДТВЕРЖДЁН</span>
+              <span v-else-if="order.status === 20">ЗАВШЁН</span>
+            </div>
+            <div class="col-12 row p-0" v-else>
+              <div class="col-lg-5 col-md-9 col-sm-12 col-xs-12 pr-0">
+                <div class="input-group pr-0">
+                  <select class="form-control" v-model="details.status" :class="{ 'is-invalid': errors.status }">
+                    <option :value="status.value" v-for="status in statuses">{{status.text}}</option>
+                  </select>
+                  <div class="invalid-feedback" v-if="errors.status">{{ errors.status[0] }}</div>
+                  <div class="input-group-append pr-0">
+                    <button @click="editOrder" :disabled="details.status === order.status" class="btn btn-primary" type="button"><b-icon class="icon" icon="arrow-counterclockwise"></b-icon></button>
+                    <button class="btn btn-secondary" @click="getStatusInput">X</button>
                   </div>
                 </div>
               </div>
-            </td>
-            <td class="text-center col-1">
-              <span class="spanHover" v-if="!showStatusSelect" @click="getStatusInput"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
-            </td>
-          </tr>
-          <tr>
-            <th>ID:</th>
-            <td>{{ order.id }}</td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Дата доставки:</th>
-            <td>
-              {{order.delivery_dt ? this.$moment(order.delivery_dt).format('L') : 'не назначена'}}
-            </td>
-            <td class="text-center">
-              <span class="spanHover" v-if="order.status !== 20" @click="getModalCalendar"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
-            </td>
-          </tr>
-          <tr>
-            <th>Email клиента:</th>
-            <td>
-              <span v-if="!showEmailClientInput">{{ order.client_email }}</span>
-              <div class="col-12 row p-0" v-else>
-                <div class="col-lg-5 col-md-9 col-sm-12 col-xs-12 pr-0">
-                  <div class="input-group pr-0">
-                    <input type="text" class="form-control" v-model="details.client_email" :class="{ 'is-invalid': errors.client_email }" placeholder="Введите email клиента..." aria-label="Имя получателя" aria-describedby="basic-addon2">
-                    <div class="input-group-append pr-0">
-                      <button @click="editOrder" :disabled="details.client_email === order.client_email" class="btn btn-primary" type="button"><b-icon class="icon" icon="arrow-counterclockwise"></b-icon></button>
-                      <button class="btn btn-secondary" @click="getEmailClientInput">X</button>
-                    </div>
+            </div>
+          </td>
+          <td class="text-center col-1">
+            <span class="spanHover" v-if="!showStatusSelect" @click="getStatusInput"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
+          </td>
+        </tr>
+        <tr>
+          <th>ID:</th>
+          <td>{{ order.id }}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Дата доставки:</th>
+          <td>
+            {{order.delivery_dt ? this.$moment(order.delivery_dt).format('L') : 'не назначена'}}
+          </td>
+          <td class="text-center">
+            <span class="spanHover" v-if="order.status !== 20" @click="getModalCalendar"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
+          </td>
+        </tr>
+        <tr>
+          <th>Email клиента:</th>
+          <td>
+            <span v-if="!showEmailClientInput">{{ order.client_email }}</span>
+            <div class="col-12 row p-0" v-else>
+              <div class="col-lg-5 col-md-9 col-sm-12 col-xs-12 pr-0">
+                <div class="input-group pr-0">
+                  <input type="text" class="form-control" v-model="details.client_email" :class="{ 'is-invalid': errors.client_email }" placeholder="Введите email клиента..." aria-label="Имя получателя" aria-describedby="basic-addon2">
+                  <div class="input-group-append pr-0">
+                    <button @click="editOrder" :disabled="details.client_email === order.client_email" class="btn btn-primary" type="button"><b-icon class="icon" icon="arrow-counterclockwise"></b-icon></button>
+                    <button class="btn btn-secondary" @click="getEmailClientInput">X</button>
                   </div>
-                  <div class="invalid-feedback" v-if="errors.client_email">{{ errors.client_email[0] }}</div>
                 </div>
+                <div class="invalid-feedback" v-if="errors.client_email">{{ errors.client_email[0] }}</div>
               </div>
-            </td>
-            <td class="text-center">
-              <span class="spanHover" v-if="!showEmailClientInput && order.status !== 20" @click="getEmailClientInput"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
-            </td>
-          </tr>
-          <tr>
-            <th>Состав заказа:</th>
-            <td>
-              <div class="row mb-2" v-for="(op, indexOp) in order.order_products">
-                <div class="col-md-10">{{indexOp + 1}}.
-                  <span v-if="indexOp === indexP" v-for="(p, indexP) in order.products">
+            </div>
+          </td>
+          <td class="text-center">
+            <span class="spanHover" v-if="!showEmailClientInput && order.status !== 20" @click="getEmailClientInput"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
+          </td>
+        </tr>
+        <tr>
+          <th>Состав заказа:</th>
+          <td>
+            <div class="row mb-2" v-for="(op, indexOp) in order.order_products">
+              <div class="col-md-10">{{indexOp + 1}}.
+                <span v-if="indexOp === indexP" v-for="(p, indexP) in order.products">
                     {{p.name}}; Количество: {{op.quantity}}; Цена: {{p.price}}; Общая стоимость: {{op.quantity * p.price}}
                   </span>
-                </div>
-                <div class="col-md-2 text-right" v-if="order.status !== 20">
-                  <span class="spanHover mr-2" @click="getModalEditQuantityItem(indexOp)"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
-                  <span class="spanHover mr-2" @click="destroyItemFromOrder(indexOp)"><b-icon class="icon" icon="trash-fill" variant="danger"></b-icon></span>
-                </div>
               </div>
-            </td>
-            <td class="text-center font-weight-bold">
-              <span v-if="order.status !== 20" class="spanHover" @click="getProductsModal"><b-icon class="icon" icon="plus-circle-fill" variant="success"></b-icon></span>
-            </td>
-          </tr>
-          <tr>
-            <th>Сумма заказа:</th>
-            <td>{{ Sum }}</td>
-            <td></td>
-          </tr>
+              <div class="col-md-2 text-right" v-if="order.status !== 20">
+                <span class="spanHover mr-2" @click="getModalEditQuantityItem(indexOp)"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
+                <span class="spanHover mr-2" @click="destroyItemFromOrder(indexOp)"><b-icon class="icon" icon="trash-fill" variant="danger"></b-icon></span>
+              </div>
+            </div>
+          </td>
+          <td class="text-center font-weight-bold">
+            <span v-if="order.status !== 20" class="spanHover" @click="getProductsModal"><b-icon class="icon" icon="plus-circle-fill" variant="success"></b-icon></span>
+          </td>
+        </tr>
+        <tr>
+          <th>Сумма заказа:</th>
+          <td>{{ Sum }}</td>
+          <td></td>
+        </tr>
         </tbody>
       </table>
       <transition name="modal" v-if="showModalCalendar">
@@ -218,28 +223,28 @@
                     и сохраните изменения...
                   </p>
                   <div class="mb-3">
-                    <div v-if="this.Products.length > 0 && !loadingProducts">
+                    <div v-if="this.Products.length > 0 && !loadingProcess">
                       <input v-model="productChoice" type="text" list="inputProducts" class="form-control" placeholder="Наименование товара...">
                       <dataList id="inputProducts">
                         <option :value="prompt.name" v-for="(prompt, index) in Products" :key="index"></option>
                       </dataList>
                     </div>
                     <div v-else-if="this.Products.length === 0" class="text-center">
-                      {{ loadingProducts ? 'Подгружаю товары...' : 'Нет товаров к добавлению...' }}
+                      {{ loadingProcess ? 'Подгружаю товары...' : 'Нет товаров к добавлению...' }}
                     </div>
                   </div>
                   <div v-if="product && product.length === 1">
                     <span class="mb-2">Ваш выбор...</span>
                     <table class="table table-bordered small">
                       <tbody>
-                        <tr>
-                          <th>Товар:</th>
-                          <td>{{ product[0].name }}</td>
-                        </tr>
-                        <tr>
-                          <th>Цена за ед.:</th>
-                          <td>{{ product[0].price }}</td>
-                        </tr>
+                      <tr>
+                        <th>Товар:</th>
+                        <td>{{ product[0].name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Цена за ед.:</th>
+                        <td>{{ product[0].price }}</td>
+                      </tr>
                       </tbody>
                     </table>
                     <input v-model="quantity" type="number" min="1" class="form-control" :class="{ 'is-invalid': errors.quantity }" placeholder="Введите количество к добавлению...">
@@ -316,6 +321,7 @@ export default {
         client_email: null,
         delivery_dt: null,
       },
+      loadingProcess: true,
       //partners:
       showPartnersModal: false,
       partners: [],
@@ -323,7 +329,6 @@ export default {
       //order_products:
       productsOrderIds: [],
       showModalOrderProducts: false,
-      loadingProducts: true,
       products: [],
       productChoice: null,
       quantity: null,
@@ -393,37 +398,42 @@ export default {
     ...mapActions("orders", ["getOrderById"]),
     getOrder() {
       this.getOrderById(this.order_id)
-        .then(() => {
-          this.order = this.$store.getters["orders/order"];
-          this.setDataToDetails();
-          this.order.products.forEach(item => {
-            this.productsOrderIds.push(item.id);
+          .then(() => {
+            this.order = this.$store.getters["orders/order"];
+            this.setDataToDetails();
+            this.order.products.forEach(item => {
+              this.productsOrderIds.push(item.id);
+            })
           })
-        })
     },
     getPartnersModal() {
       this.showPartnersModal = !this.showPartnersModal;
       this.partnerChoice = null;
+      if (this.partners.length === 0) {
+        this.getPartners();
+      }
     },
     ...mapActions("data", ["getPartnersList"]),
     getPartners() {
+      this.loadingProcess = true;
       this.getPartnersList()
-        .then(() => {
-          this.partners = this.$store.getters["data/partners"];
-        })
+          .then(() => {
+            this.partners = this.$store.getters["data/partners"];
+            this.loadingProcess = false;
+          })
     },
     ...mapActions("orders", ["setNewPartner"]),
     changePartner() {
       this.setNewPartner({order_id: this.order_id, partner_id: this.partner[0].id})
-        .then(() => {
-          if (this.$store.getters["messageError"]) {
-            this.$toastr.e(this.$store.getters["messageError"]);
-          } else if (this.$store.getters["messageSuccess"]) {
-            this.order.partner = this.partner[0];
-            this.getPartnersModal();
-            this.$toastr.s(this.$store.getters["messageSuccess"]);
-          }
-        })
+          .then(() => {
+            if (this.$store.getters["messageError"]) {
+              this.$toastr.e(this.$store.getters["messageError"]);
+            } else if (this.$store.getters["messageSuccess"]) {
+              this.order.partner = this.partner[0];
+              this.getPartnersModal();
+              this.$toastr.s(this.$store.getters["messageSuccess"]);
+            }
+          })
     },
     getStatusInput () {
       this.showStatusSelect = !this.showStatusSelect;
@@ -469,12 +479,12 @@ export default {
     },
     ...mapActions("data", ["getProductsList"]),
     getProducts() {
-      this.loadingProducts = true;
+      this.loadingProcess = true;
       this.getProductsList()
-        .then(() => {
-          this.products = this.$store.getters["data/products"];
-          this.loadingProducts = false;
-        })
+          .then(() => {
+            this.products = this.$store.getters["data/products"];
+            this.loadingProcess = false;
+          })
     },
     getProductsModal() {
       if (this.products.length === 0) {
@@ -491,37 +501,38 @@ export default {
       details['product_id'] = this.product[0].id;
       details['quantity'] = this.quantity;
       this.setItemInOrder(details)
-        .then(() => {
-          if (this.$store.getters["messageError"]) {
-            this.$toastr.e(this.$store.getters["messageError"]);
-          } else if (this.$store.getters["messageSuccess"]) {
-            this.order.order_products.push(this.$store.getters["orders/order_product"]);
-            this.order.products.push(this.product[0]);
-            this.productsOrderIds.push(this.product[0].id)
-            this.getProductsModal();
-            this.$toastr.s(this.$store.getters["messageSuccess"]);
-          }
-        })
+          .then(() => {
+            if (this.$store.getters["messageError"]) {
+              this.$toastr.e(this.$store.getters["messageError"]);
+            } else if (this.$store.getters["messageSuccess"]) {
+              this.order.order_products.push(this.$store.getters["orders/order_product"]);
+              this.order.products.push(this.product[0]);
+              this.productsOrderIds.push(this.product[0].id)
+              this.getProductsModal();
+              this.$toastr.s(this.$store.getters["messageSuccess"]);
+            }
+          })
     },
     ...mapActions("orders", ["destroyItemOrder"]),
     destroyItemFromOrder(indexOrderProduct) {
       let result = confirm('Вы действительно хотите удалить позицию из заказа? Если да, подтвердите действие...')
       if (result) {
         this.destroyItemOrder({order_id: this.order_id, order_product_id: this.order.order_products[indexOrderProduct].id})
-          .then(() => {
-            if (this.$store.getters["messageError"]) {
-              this.$toastr.e(this.$store.getters["messageError"]);
-            } else if (this.$store.getters["messageSuccess"]) {
-              let index = this.productsOrderIds.indexOf(this.order.order_products[indexOrderProduct].product_id);
-              if (index !== -1) {
-                this.productsOrderIds.splice(index, 1);
+            .then(() => {
+              if (this.$store.getters["messageError"]) {
+                this.$toastr.e(this.$store.getters["messageError"]);
+              } else if (this.$store.getters["messageSuccess"]) {
+                let index = this.productsOrderIds.indexOf(this.order.order_products[indexOrderProduct].product_id);
+                if (index !== -1) {
+                  this.productsOrderIds.splice(index, 1);
+                }
+                this.order.order_products.splice(indexOrderProduct, 1);
+                this.$toastr.s(this.$store.getters["messageSuccess"]);
               }
-              this.order.order_products.splice(indexOrderProduct, 1);
-              this.$toastr.s(this.$store.getters["messageSuccess"]);
-            }
-          });
+            });
       }
     },
+    //не доделал, доделать!!!
     getModalEditQuantityItem(indexOrderProduct) {
       let order_product = indexOrderProduct !== null ? this.order.order_products[indexOrderProduct] : null;
       this.indexOrderProduct = indexOrderProduct !== null ? indexOrderProduct : null;
@@ -553,7 +564,6 @@ export default {
   },
   created() {
     this.getOrder();
-    this.getPartners();
   }
 }
 </script>
