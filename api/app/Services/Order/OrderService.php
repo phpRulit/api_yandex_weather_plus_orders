@@ -9,8 +9,6 @@ use App\Models\Other\Order;
 use App\Models\Other\OrderProduct;
 use App\Models\Other\Product;
 use App\Services\AppMessenger\AppMessenger;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
