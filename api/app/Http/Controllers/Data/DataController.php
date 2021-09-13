@@ -10,8 +10,9 @@ use Illuminate\Http\JsonResponse;
 class DataController extends Controller
 {
 
-    //вытаскиваем так, если записей немного, если много, то изобретаем другой вариант
-    //(сделано для быстроты решения)
+    //вытаскиваем так, если записей немного, если много, то изобретаем другой вариант,
+    //а точнее вносим изменения в миграции, прописываем fulltext search и так же вносим изменения
+    //на фронте...
 
     public function getPartnersList(): JsonResponse
     {
