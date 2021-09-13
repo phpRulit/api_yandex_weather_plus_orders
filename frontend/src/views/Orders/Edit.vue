@@ -92,14 +92,14 @@
                   <div class="invalid-feedback" v-if="errors.status">{{ errors.status[0] }}</div>
                   <div class="input-group-append pr-0">
                     <button @click="editOrder" :disabled="details.status === order.status" class="btn btn-primary" type="button"><b-icon class="icon" icon="arrow-counterclockwise"></b-icon></button>
-                    <button class="btn btn-secondary" @click="getStatusInput">X</button>
+                    <button class="btn btn-secondary" @click="getStatusSelect">X</button>
                   </div>
                 </div>
               </div>
             </div>
           </td>
           <td class="text-center col-1">
-            <span class="spanHover" v-if="!showStatusSelect" @click="getStatusInput"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
+            <span class="spanHover" v-if="!showStatusSelect" @click="getStatusSelect"><b-icon class="icon" icon="pencil" variant="primary"></b-icon></span>
           </td>
         </tr>
         <tr>
@@ -435,7 +435,7 @@ export default {
             }
           })
     },
-    getStatusInput () {
+    getStatusSelect () {
       this.showStatusSelect = !this.showStatusSelect;
       if (!this.showStatusSelect) this.setDataToDetails();
     },
