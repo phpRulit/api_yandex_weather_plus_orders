@@ -151,26 +151,9 @@ class DatabaseSeeder extends Seeder
 
         DB::transaction(function () use ($orders, $orderProducts, $products, $partners, $vendors) {
 
-            foreach ($partners as $item) {
-                \App\Models\Other\Partner::create([
-                    'email' => $item['email'],
-                    'name' => $item['name'],
-                ]);
-            }
-
-            foreach ($vendors as $item) {
-                \App\Models\Other\Vendor::create([
-                    'email' => $item['email'],
-                    'name' => $item['name'],
-                ]);
-            }
-            foreach ($products as $item) {
-                \App\Models\Other\Product::create([
-                    'name' => $item['name'],
-                    'price' => $item['price'],
-                    'vendor_id' => $item['vendor_id']
-                ]);
-            }
+            DB::table('partners')->insert($partners);
+            DB::table('vendors')->insert($vendors);
+            DB::table('products')->insert($products);
 
             foreach ($orders as $item) {
                 $order = \App\Models\Other\Order::create([
