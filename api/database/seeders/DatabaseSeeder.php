@@ -19,31 +19,31 @@ class DatabaseSeeder extends Seeder
         $orders = [
             [
                 'status' => Order::STATUS_NEW,
-                'client_email' => 'bestfatorv@gmail.com',
+                'client_email' => 'client1@gmail.com',
                 'partner_id' => 1,
                 'delivery_dt' => Carbon::now()
             ],
             [
                 'status' => Order::STATUS_NEW,
-                'client_email' => 'bestfatorv@gmail.com',
+                'client_email' => 'client2@gmail.com',
                 'partner_id' => 2,
                 'delivery_dt' => Carbon::now()->addDays(3)
             ],
             [
                 'status' => Order::STATUS_CONFIRM,
-                'client_email' => 'bestfatorv@gmail.com',
+                'client_email' => 'client3@gmail.com',
                 'partner_id' => 3,
                 'delivery_dt' => Carbon::now()->addDay(1)
             ],
             [
                 'status' => Order::STATUS_CONFIRM,
-                'client_email' => 'bestfatorv@gmail.com',
+                'client_email' => 'client4@gmail.com',
                 'partner_id' => 4,
                 'delivery_dt' => Carbon::now()->addDays(2)
             ],
             [
                 'status' => Order::STATUS_COMPLETED,
-                'client_email' => 'bestfatorv@gmail.com',
+                'client_email' => 'client5@gmail.com',
                 'partner_id' => 5,
                 'delivery_dt' => Carbon::now()->subDays(2)
             ],
