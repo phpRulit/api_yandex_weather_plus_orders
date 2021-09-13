@@ -20,11 +20,11 @@ class EmailMessenger extends AbstractMessengers implements ShouldQueue
      */
     public function send(): bool
     {
-        $this->sendMail($this->template);
+        $this->sendMail();
         return parent::send();
     }
 
-    private function sendMail(string $template)
+    private function sendMail()
     {
         /* //Отправка без очереди
          * Mail::send($template, ['message' => $this->message],
@@ -40,7 +40,7 @@ class EmailMessenger extends AbstractMessengers implements ShouldQueue
             'recipient' => $this->recipient,
             'whom' => $this->whom,
             'subject' => $this->subject,
-            'template' => $template,
+            'template' => $this->template,
             'message' => ['data' => $this->message], //не использовать ключ message (зарезервирован Laravel), поэтому data
         ];
         Mail::queueOn('mail', new AppShipped($params));
