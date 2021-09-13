@@ -10,6 +10,9 @@ use Illuminate\Http\JsonResponse;
 class DataController extends Controller
 {
 
+    //вытаскиваем так, если записей немного, если много, то изобретаем другой вариант
+    //(сделано для быстроты решения)
+
     public function getPartnersList(): JsonResponse
     {
         return response()->json(Partner::all());
