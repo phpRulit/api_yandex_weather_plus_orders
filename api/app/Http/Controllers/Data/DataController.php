@@ -12,7 +12,7 @@ class DataController extends Controller
 
     //вытаскиваем так, если записей немного, если много, то изобретаем другой вариант,
     //а точнее вносим изменения в миграции, прописываем fulltext search и так же вносим изменения
-    //на фронте...
+    //на фронте, ну и здесь соответственно...
 
     public function getPartnersList(): JsonResponse
     {
