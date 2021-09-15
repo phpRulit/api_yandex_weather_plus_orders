@@ -58,9 +58,9 @@ export default {
             commit('setMessageError', null, {root: true});
             commit('setMessageSuccess', null, {root: true});
             const formData = new FormData();
-            details.status ? formData.append('status', details.status) : null;
-            details.client_email ? formData.append('client_email', details.client_email) : null;
-            details.delivery_dt ? formData.append('delivery_dt', details.delivery_dt) : null;
+            details.status !== null ? formData.append('status', details.status) : null;
+            details.client_email !== null ? formData.append('client_email', details.client_email) : null;
+            details.delivery_dt !== null ? formData.append('delivery_dt', details.delivery_dt) : null;
             return axios
                 .post('/orders/edit-order/' + details.order_id, formData)
                 .then(({data}) => {
