@@ -21,13 +21,7 @@ class OrderService
 
     public function editOrder(Order $order, EditOrderRequest $request): void
     {
-        if (isset($request['status']) && $order->status !== (int)$request['status']) {
-            $order->update(['status' => (int)$request['status']]);
-        } elseif (isset($request['client_email']) && $order->client_email !== $request['client_email']) {
-            $order->update(['client_email' => $request['client_email']]);
-        } elseif (isset($request['delivery_dt']) && $order->delivery_dt !== $request['delivery_dt']) {
-            $order->update(['delivery_dt' => $request['delivery_dt']]);
-        }
+        $order->fill($request->all())->save();
     }
 
     public function sentMailsAboutOrderCompleted(Order $order): void
