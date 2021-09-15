@@ -27,7 +27,7 @@ class EmailMessenger extends AbstractMessengers implements ShouldQueue
     private function sendMail()
     {
         /* //Отправка без очереди
-         * Mail::send($template, ['message' => $this->message],
+         * Mail::send($this->template, ['message' => $this->message],
             function($mail) {
                 $mail->from($this->sender, $this->from);
                 $mail->to($this->recipient, $this->whom);
