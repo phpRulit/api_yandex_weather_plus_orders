@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $this->hasOne(Vendor::class, 'vendor_id', 'id');
     }
+
+    public function inOrderYet(Order $order): bool
+    {
+        return array_search($this->id, array_column($order->orderProducts()->get()->toArray(), 'product_id')) !== false;
+    }
 }

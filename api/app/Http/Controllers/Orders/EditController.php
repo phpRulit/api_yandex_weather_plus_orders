@@ -84,8 +84,7 @@ class EditController extends Controller
             return response()->json([
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
-        }
-        if (array_search($product->id, array_column($order->orderProducts()->get()->toArray(), 'product_id')) !== false) {
+        } elseif ($product->inOrderYet($order)) {
             return response()->json([
                 'messageError' => 'Нельзя добавить данный товар, т.к. он уже есть в заказе! Просто измените его количество...'
             ]);
