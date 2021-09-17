@@ -16,12 +16,12 @@ class DataController extends Controller
 
     public function getPartnersList(): JsonResponse
     {
-        return response()->json(Partner::all());
+        return response()->json(Partner::select(['id', 'email', 'name'])->toBase()->get());
     }
 
     public function getProductsList(): JsonResponse
     {
-        return response()->json(Product::all());
+        return response()->json(Product::select(['id', 'name', 'price'])->toBase()->get());
     }
 
 }
