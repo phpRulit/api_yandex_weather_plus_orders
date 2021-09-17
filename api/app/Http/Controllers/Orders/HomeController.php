@@ -13,7 +13,7 @@ class HomeController extends Controller
 
     public function index(FilterRequest $request): JsonResponse
     {
-        $query = Order::with(['partner', 'orderProducts', 'products']);
+        $query = Order::with(['partner:id,name', 'orderProducts:id,order_id,quantity,price', 'products:products.name,products.price']);
 
         if (!empty($request['status'])) {
             if ($request['status'] === 'all') {
@@ -36,6 +36,6 @@ class HomeController extends Controller
             }
         }
 
-        return response()->json($query->has('orderProducts')->paginate($request['max']));
+        return response()->json($query->select(['id', 'status', 'partner_id'])->has('orderProducts')->paginate($request['max']));
     }
 }

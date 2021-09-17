@@ -25,7 +25,10 @@ class EditController extends Controller
 
     public function order(int $order_id): JsonResponse
     {
-        return response()->json(Order::where('id', $order_id)->with(['partner', 'orderProducts', 'products'])->first());
+        return response()->json(Order::where('id', $order_id)
+            ->with(['partner:id,name,email', 'orderProducts:id,order_id,product_id,quantity,price', 'products:products.id,products.name,products.price'])
+            ->select(['id', 'status', 'client_email', 'partner_id', 'delivery_dt'])
+            ->first());
     }
 
     public function editPartner(Order $order, ChangePartnerRequest $request): JsonResponse
