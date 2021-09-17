@@ -44,6 +44,9 @@
                 </p>
                 <div class="mb-3">
                   <div v-if="!loadingProcess">
+                    <div v-if="errors.partner_id" class="alert alert-danger" role="alert">
+                      {{ errors.partner_id[0] }}
+                    </div>
                     <input v-model="partnerChoice" id="title" type="text" list="inputList" class="form-control" placeholder="Наименование организации...">
                     <dataList id="inputList">
                       <option :value="prompt.name" v-for="(prompt, index) in Partners" :key="index"></option>
