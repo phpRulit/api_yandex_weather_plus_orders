@@ -14,7 +14,7 @@ class ChangePartnerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'partner_id' => 'required|integer',
+            'partner_id' => 'required|integer|exists:partners,id',
         ];
     }
 }
