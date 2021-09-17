@@ -36,6 +36,6 @@ class HomeController extends Controller
             }
         }
 
-        return response()->json($query->select(['id', 'status', 'partner_id'])->has('orderProducts')->paginate($request['max']));
+        return response()->json($query->select(['id', 'status', 'partner_id'])->has('orderProducts')->paginate($request['max'])); //для infinite scroll делаем по-другому...
     }
 }
