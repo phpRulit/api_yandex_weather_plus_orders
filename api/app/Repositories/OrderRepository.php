@@ -45,7 +45,8 @@ class OrderRepository extends CoreRepository
 
     public function getForShow($id): Model
     {
-        return Model::where('id', $id)
+        return $this->startConditions()
+            ->where('id', $id)
             ->with(['partner:id,name,email', 'orderProducts:id,order_id,product_id,quantity,price', 'products:products.id,products.name,products.price'])
             ->select(['id', 'status', 'client_email', 'partner_id', 'delivery_dt'])
             ->first();
