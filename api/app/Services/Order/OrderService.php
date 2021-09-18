@@ -30,7 +30,7 @@ class OrderService
         }
     }
 
-    public function sentMailsAboutOrderCompleted(Order $order): void
+    public function sendMailsAboutOrderCompleted(Order $order): void
     {
         $arrayData = [
             ['mail' => $order->client_email, 'name' => ''],
@@ -50,11 +50,11 @@ class OrderService
         ];
         foreach ($arrayData as $data) {
             $message['nameRecipient'] = $data['name'];
-            $this->sentMailAllNeeded($data['mail'], $data['name'], $message);
+            $this->sendMailAllNeeded($data['mail'], $data['name'], $message);
         }
     }
 
-    private function sentMailAllNeeded(string $emailRecipient, string $nameRecipient, array $message): void
+    private function sendMailAllNeeded(string $emailRecipient, string $nameRecipient, array $message): void
     {
         $messenger = new AppMessenger();
         $messenger->toEmail('mail.order')

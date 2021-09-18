@@ -9,6 +9,7 @@ use App\Http\Requests\EditOrderRequest;
 use App\Models\Other\Order;
 use App\Models\Other\OrderProduct;
 use App\Models\Other\Product;
+use App\Repositories\OrderRepository;
 use App\Services\Order\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -16,19 +17,18 @@ use Illuminate\Support\Facades\Log;
 class EditController extends Controller
 {
 
-    private $service;
+    private $orderRepository;
+    private $orderService;
 
-    public function __construct(OrderService $service)
+    public function __construct()
     {
-        $this->service = $service;
+        $this->orderRepository = app(OrderRepository::class);
+        $this->orderService = app(OrderService::class);
     }
 
     public function order(int $order_id): JsonResponse
     {
-        return response()->json(Order::where('id', $order_id)
-            ->with(['partner:id,name,email', 'orderProducts:id,order_id,product_id,quantity,price', 'products:products.id,products.name,products.price'])
-            ->select(['id', 'status', 'client_email', 'partner_id', 'delivery_dt'])
-            ->first());
+        return response()->json($this->orderRepository->getForShow($order_id));
     }
 
     public function editPartner(Order $order, ChangePartnerRequest $request): JsonResponse
@@ -39,7 +39,7 @@ class EditController extends Controller
             ]);
         }
         try {
-            $this->service->editPartner($order, $request);
+            $this->orderService->editPartner($order, $request);
         } catch (\DomainException $e) {
             Log::error($e->getMessage());
             return response()->json([
@@ -59,7 +59,7 @@ class EditController extends Controller
             ]);
         }
         try {
-            $this->service->editOrder($order, $request);
+            $this->orderService->editOrder($order, $request);
         } catch (\DomainException $e) {
             Log::error($e->getMessage());
             return response()->json([
@@ -71,11 +71,11 @@ class EditController extends Controller
         ]);
     }
 
-    public function sentMailsAboutOrderCompleted (Order $order): void
+    public function sendMailsAboutOrderCompleted (Order $order): void
     {
         if ($order->isCompleted())
             try {
-                $this->service->sentMailsAboutOrderCompleted($order);
+                $this->orderService->sendMailsAboutOrderCompleted($order);
             } catch (\DomainException $e) {
                 Log::error($e->getMessage());
             }
@@ -93,7 +93,7 @@ class EditController extends Controller
             ]);
         }
         try {
-            $order_product = $this->service->addItemInOrder($order, $product, $request);
+            $order_product = $this->orderService->addItemInOrder($order, $product, $request);
         } catch (\DomainException $e) {
             Log::error($e->getMessage());
             return response()->json([
@@ -120,7 +120,7 @@ class EditController extends Controller
             ]);
         }
         try {
-            $this->service->destroyItemOrder($order_product);
+            $this->orderService->destroyItemOrder($order_product);
         } catch (\DomainException $e) {
             Log::error($e->getMessage());
             return response()->json([
@@ -140,7 +140,7 @@ class EditController extends Controller
             ]);
         }
         try {
-            $this->service->editQuantityItem($order_product, $product, $request);
+            $this->orderService->editQuantityItem($order_product, $product, $request);
         } catch (\DomainException $e) {
             Log::error($e->getMessage());
             return response()->json([
