@@ -14,7 +14,6 @@ class OrderRepository extends CoreRepository
         return Model::class;
     }
 
-    //выводим список категорий с пагинацией
     public function getAllWithPaginate(FilterRequest $request): LengthAwarePaginator
     {
         $query = $this->startConditions()
@@ -53,7 +52,6 @@ class OrderRepository extends CoreRepository
     }
 
 
-    // Получаем модель для редактирования в админке по id
     public function getById(int $id): Model
     {
         return $this->startConditions()->find($id);
