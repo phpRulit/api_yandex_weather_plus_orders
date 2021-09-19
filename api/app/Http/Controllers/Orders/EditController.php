@@ -8,7 +8,6 @@ use App\Http\Requests\ChangePartnerRequest;
 use App\Http\Requests\EditOrderRequest;
 use App\Models\Other\Order;
 use App\Models\Other\OrderProduct;
-use App\Models\Other\Product;
 use App\Repositories\OrderProductRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
