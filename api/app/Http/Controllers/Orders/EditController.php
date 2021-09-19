@@ -9,7 +9,9 @@ use App\Http\Requests\EditOrderRequest;
 use App\Models\Other\Order;
 use App\Models\Other\OrderProduct;
 use App\Models\Other\Product;
+use App\Repositories\OrderProductRepository;
 use App\Repositories\OrderRepository;
+use App\Repositories\ProductRepository;
 use App\Services\Order\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -18,11 +20,15 @@ class EditController extends Controller
 {
 
     private $orderRepository;
+    private $productRepository;
+    private $orderProductRepository;
     private $orderService;
 
     public function __construct()
     {
         $this->orderRepository = app(OrderRepository::class);
+        $this->productRepository = app(ProductRepository::class);
+        $this->orderProductRepository = app(OrderProductRepository::class);
         $this->orderService = app(OrderService::class);
     }
 
@@ -88,7 +94,7 @@ class EditController extends Controller
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
         }
-        $product = $this->getProduct($product_id);
+        $product = $this->productRepository->getById($product_id);
         if (is_null($product)) {
             return response()->json([
                 'messageError' => 'Продукт не найден!!! Нельзя добавить в заказ...'
@@ -119,7 +125,7 @@ class EditController extends Controller
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
         }
-        $order_product = $this->getOrderProduct($order_product_id);
+        $order_product = $this->orderProductRepository->getById($order_product_id);
         if (is_null($order_product)) {
             return response()->json([
                 'messageError' => 'Позиция уже была удалена...'
@@ -145,7 +151,7 @@ class EditController extends Controller
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
         }
-        $product = $this->getProduct($product_id);
+        $product = $this->productRepository->getById($product_id);
         if (is_null($product)) {
             return response()->json([
                 'messageError' => 'Продукт не найден!!! Удалите запись...'
@@ -162,15 +168,5 @@ class EditController extends Controller
         return response()->json([
             'message' => 'Количество изменено...'
         ]);
-    }
-
-    private function getProduct(int $id)
-    {
-        return Product::find($id);
-    }
-
-    private function getOrderProduct(int $id)
-    {
-        return OrderProduct::find($id);
     }
 }

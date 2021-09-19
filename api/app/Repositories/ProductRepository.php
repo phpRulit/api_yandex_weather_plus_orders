@@ -17,4 +17,9 @@ class ProductRepository extends CoreRepository
         return $this->startConditions()->select(['id', 'name', 'price'])->toBase()->get();
     }
 
+    public function getById(int $id): Model
+    {
+        return $this->startConditions()->find($id);
+    }
+
 }
