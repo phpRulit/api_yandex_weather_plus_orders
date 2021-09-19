@@ -20,12 +20,12 @@ const routes = [
       {
         path: 'list',
         name: 'orders.list',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Orders/List.vue')
+        component: () => import(/* webpackChunkName: "orders.list" */ '../views/Orders/List.vue')
       },
       {
         path: 'order-edit/:id',
         name: 'order.edit',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Orders/Edit.vue')
+        component: () => import(/* webpackChunkName: "order.edit" */ '../views/Orders/Edit.vue')
       }
     ]
   },

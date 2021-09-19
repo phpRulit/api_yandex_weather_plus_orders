@@ -81,11 +81,17 @@ class EditController extends Controller
             }
     }
 
-    public function addItemInOrder(Order $order, Product $product, QuantityRequest $request): JsonResponse
+    public function addItemInOrder(Order $order, int $product_id, QuantityRequest $request): JsonResponse
     {
         if ($order->isCompleted()) {
             return response()->json([
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
+            ]);
+        }
+        $product = $this->getProduct($product_id);
+        if (is_null($product)) {
+            return response()->json([
+                'messageError' => 'Продукт не найден!!! Нельзя добавить в заказ...'
             ]);
         } elseif ($product->inOrderYet($order)) {
             return response()->json([
@@ -113,7 +119,7 @@ class EditController extends Controller
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
         }
-        $order_product = OrderProduct::where('id', $order_product_id)->first();
+        $order_product = $this->getOrderProduct($order_product_id);
         if (is_null($order_product)) {
             return response()->json([
                 'messageError' => 'Позиция уже была удалена...'
@@ -132,11 +138,17 @@ class EditController extends Controller
         ]);
     }
 
-    public function editQuantityItem(Order $order, OrderProduct $order_product, Product $product, QuantityRequest $request): JsonResponse
+    public function editQuantityItem(Order $order, OrderProduct $order_product, int $product_id, QuantityRequest $request): JsonResponse
     {
         if ($order->isCompleted()) {
             return response()->json([
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
+            ]);
+        }
+        $product = $this->getProduct($product_id);
+        if (is_null($product)) {
+            return response()->json([
+                'messageError' => 'Продукт не найден!!! Удалите запись...'
             ]);
         }
         try {
@@ -150,5 +162,15 @@ class EditController extends Controller
         return response()->json([
             'message' => 'Количество изменено...'
         ]);
+    }
+
+    private function getProduct(int $id)
+    {
+        return Product::find($id);
+    }
+
+    private function getOrderProduct(int $id)
+    {
+        return OrderProduct::find($id);
     }
 }
