@@ -143,14 +143,14 @@ class EditController extends Controller
         ]);
     }
 
-    public function editQuantityItem(Order $order, OrderProduct $order_product, int $product_id, QuantityRequest $request): JsonResponse
+    public function editQuantityItem(Order $order, OrderProduct $order_product, QuantityRequest $request): JsonResponse
     {
         if ($order->isCompleted()) {
             return response()->json([
                 'messageError' => 'Заказ завершён и не подлежит изменениям...'
             ]);
         }
-        $product = $this->productRepository->getById($product_id);
+        $product = $this->productRepository->getById($order_product->product_id); //или по связи, не суть...
         if (is_null($product)) {
             return response()->json([
                 'messageError' => 'Продукт не найден!!! Удалите запись...'

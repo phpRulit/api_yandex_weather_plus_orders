@@ -549,7 +549,6 @@ export default {
       let details = {};
       details['order_id'] = this.order_id;
       details['order_product_id'] = this.order.order_products[this.indexOrderProduct].id;
-      details['product_id'] = this.editProduct.id;
       details['quantity'] = this.quantity;
       this.editQuantityItemInOrder(details)
           .then(() => {

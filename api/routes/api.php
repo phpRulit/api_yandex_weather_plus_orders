@@ -44,7 +44,7 @@ Route::group([
             Route::post('edit-order/{order}', 'EditController@editOrder');
             Route::post('mails-order-completed/{order}', 'EditController@sendMailsAboutOrderCompleted');
             Route::post('add-item-in-order/{order}/{product_id}', 'EditController@addItemInOrder');
-            Route::post('edit-quantity-item-order/{order}/{order_product}/{product_id}', 'EditController@editQuantityItem');
+            Route::post('edit-quantity-item-order/{order}/{order_product}', 'EditController@editQuantityItem');
             Route::delete('destroy-item-order/{order}/{order_product_id}', 'EditController@destroyItemOrder');
         });
     });

@@ -98,7 +98,7 @@ export default {
             const formData = new FormData();
             formData.append('quantity', details.quantity);
             return axios
-                .post('/orders/edit-quantity-item-order/' + details.order_id + '/' + details.order_product_id + '/' + details.product_id, formData)
+                .post('/orders/edit-quantity-item-order/' + details.order_id + '/' + details.order_product_id, formData)
                 .then(({data}) => {
                     if (data.messageError) {
                         commit('setMessageError', data.messageError, {root: true});
